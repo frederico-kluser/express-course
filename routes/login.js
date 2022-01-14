@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();
+var router = express.Router({ mergeParams: true });
 
 const { getUsers } = require('../middlewares/databaseMiddlewares');
 const { getFiltredUser } = require('../helpers/database');
@@ -21,7 +21,13 @@ router.get('/', getUsers, (req, res, next) => {
     return next(errorBuilder('Wrong password', 401));
   }
 
-  res.status(200).send(user);
+  req.session.authenticated = true;
+  req.session.user = {
+    username: user.name,
+    password: pass.pass,
+  }
+
+  res.status(200).send('You are logged in');
 });
 
 module.exports = router;

@@ -18,8 +18,10 @@
   },
   "homepage": "https://github.com/frederico-kluser/express-course#readme",
   "dependencies": {
+    "dotenv": "^11.0.0",
     "errorhandler": "^1.5.1",
     "express": "^4.17.2",
+    "express-session": "^1.17.2",
     "morgan": "^1.10.0"
   }
 }
