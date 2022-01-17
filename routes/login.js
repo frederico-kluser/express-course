@@ -1,33 +1,31 @@
 var express = require('express');
 var router = express.Router({ mergeParams: true });
 
-const { getUsers } = require('../middlewares/databaseMiddlewares');
-const { getFiltredUser } = require('../helpers/database');
-const { headerParams } = require('../helpers/request');
+const { bodyParams } = require('../helpers/request');
 const { errorBuilder } = require('../helpers/error');
+const { getUser } = require('../helpers/database');
 
-router.get('/', getUsers, (req, res, next) => {
-  const { name, pass } = req.headers;
-  const dontHaveParams = headerParams(req, ['name', 'pass']);
+router.post('/', (req, res, next) => {
+  const { username, password } = req.body;
+  const dontHaveParams = bodyParams(req, ['username', 'password']);
   
   if (dontHaveParams) {
     return next(errorBuilder(dontHaveParams, 400));
   }
 
-  const user = getFiltredUser(req, 'name', name);
-  if (!user) {
-    return next(errorBuilder('User not found', 404));
-  } else if (user.pass !== pass) {
-    return next(errorBuilder('Wrong password', 401));
-  }
+  const { error, content } = getUser(username, password);
 
-  req.session.authenticated = true;
-  req.session.user = {
-    username: user.name,
-    password: pass.pass,
+  if (error) {
+    return next(content);
+  } else {
+    req.session.authenticated = true;
+    req.session.user = {
+      id: content.id,
+      username,
+      password,
+    }
+    res.status(200).send('You are logged in');
   }
-
-  res.status(200).send('You are logged in');
 });
 
 module.exports = router;

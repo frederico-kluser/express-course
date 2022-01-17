@@ -14,6 +14,4 @@ router.get('/secret', (req, res, next) => {
   res.send(process.env.SESSION_SECRET);
 })
 
-router.use('/login', require('./login'));
-
 module.exports = router;
