@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router({ mergeParams: true });
+const express = require('express');
+const router = express.Router({ mergeParams: true });
 
 const { bodyParams } = require('../helpers/request');
 const { errorBuilder } = require('../helpers/error');
