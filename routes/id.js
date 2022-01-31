@@ -13,7 +13,7 @@ router.get('/:id', authentificate, (req, res, next) => {
     return next(errorBuilder('User not found', 404));
   }
 
-  res.status(200).send(result);
+  res.status(200).json(result);
 });
 
 module.exports = router;

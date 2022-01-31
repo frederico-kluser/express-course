@@ -13,7 +13,7 @@ const PORT = 8080;
 
 app.use(express.static('public'));
 app.use(morgan('dev'));
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // app.use(express.json()); if dont wanna body-parser option
 app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
