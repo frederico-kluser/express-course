@@ -60,13 +60,9 @@ const getAllUsersEmail = (req, res, next) => {
 };
 
 const updateUser = (req, res, next) => {
-  const { name } = req.body;
-
   User.findByIdAndUpdate(
   req.session.user.id,
-  {
-    name,
-  },
+  req.body,
   {
     new: true,
   }).then((data) => {
