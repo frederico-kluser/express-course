@@ -78,10 +78,28 @@ const updateUser = (req, res, next) => {
   });
 };
 
+const replaceUser = (req, res, next) => {  
+  User.replaceOne(
+  { _id: req.session.user.id},
+  req.body
+  ).then((data) => {
+    res.status(200).json({
+      status: 'success',
+      data,
+    })
+  }).catch((err) => {
+    res.status(400).json({
+      status: 'error',
+      message: err,
+    })
+  });
+};
+
 module.exports = {
   insertUser,
   getAllUsers,
   getAllUsersEmail,
   getUserById,
   updateUser,
+  replaceUser,
 };
