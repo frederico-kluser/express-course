@@ -97,9 +97,9 @@ const replaceUser = (req, res, next) => {
 
 const deleteUser = (req, res, next) => {
   User.findByIdAndDelete(req.session.user.id).then((data) => {
-    res.status(200).json({
+    res.status(204).json({
       status: 'success',
-      data,
+      data: null,
     })
   }).catch((err) => {
     res.status(400).json({
