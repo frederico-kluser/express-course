@@ -7,5 +7,6 @@ router.post('/insert-user', authentificate, userController.insertUser);
 router.get('/get-all-users', authentificate, userController.getAllUsers);
 router.get('/get-all-users-email', authentificate, userController.getAllUsersEmail);
 router.get('/:id', authentificate, userController.getUserById);
+router.put('/update', authentificate, userController.updateUser);
 
 module.exports = router;
