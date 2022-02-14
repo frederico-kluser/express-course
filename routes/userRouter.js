@@ -9,5 +9,6 @@ router.get('/get-all-users-email', authentificate, userController.getAllUsersEma
 router.get('/:id', authentificate, userController.getUserById);
 router.put('/update', authentificate, userController.updateUser);
 router.put('/replace', authentificate, userController.replaceUser);
+router.delete('/delete', authentificate, userController.deleteUser);
 
 module.exports = router;
