@@ -4,7 +4,6 @@ const makeLogin = (req, res, next) => {
   const { email, password } = req.body;
 
   User.find({ email, password }).then((users) => {
-
     if (users.length === 0) {
       const err = new Error(message);
       err.status = 404;
@@ -13,8 +12,8 @@ const makeLogin = (req, res, next) => {
 
     req.session.authenticated = true;
     req.session.user = {
-      id: users._id,
-      username: users.name,
+      id: users[0]._id,
+      username: users[0].name,
       password,
     }
 
