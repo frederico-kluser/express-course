@@ -19,7 +19,7 @@ const makeLogin = (req, res, next) => {
 
     res.status(200).json({
       status: 'success',
-      data: users
+      data: users[0]
     });
   }).catch((err) => {
     res.status(400).send(err);

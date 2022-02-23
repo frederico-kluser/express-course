@@ -33,8 +33,8 @@ describe("Test the routers path", () => {
 
     // assert
     expect(response.statusCode).toBe(statusCode);
-    expect(response.body.data[0].email).toBe(testUserInfo.email);
-    expect(response.body.data[0].password).toBe(testUserInfo.password);
+    expect(response.body.data.email).toBe(testUserInfo.email);
+    expect(response.body.data.password).toBe(testUserInfo.password);
   });
 
   test("It should response '/user/:id' router", async () => {
