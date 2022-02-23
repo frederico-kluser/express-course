@@ -22,33 +22,38 @@ describe("Test the routers path", () => {
   });
 
   test("It should response '/login' router", async () => {
-    expect.assertions(3);
+    expect.assertions(4);
 
     // arrange 
-    const statusCode = 200;
+    const successCode = 200;
+    const failureCode = 400;
 
     // act
-    const response = await request(app).post("/login").send(testUserInfo);
+    const responseSuccess = await request(app).post("/login").send(testUserInfo);
+    const responseFailure = await request(app).post("/login").send({});
     
-
     // assert
-    expect(response.statusCode).toBe(statusCode);
-    expect(response.body.data.email).toBe(testUserInfo.email);
-    expect(response.body.data.password).toBe(testUserInfo.password);
+    expect(responseSuccess.statusCode).toBe(successCode);
+    expect(responseSuccess.body.data.email).toBe(testUserInfo.email);
+    expect(responseSuccess.body.data.password).toBe(testUserInfo.password);
+    expect(responseFailure.statusCode).toBe(failureCode);
   });
 
   test("It should response '/user/:id' router", async () => {
-    expect.assertions(3);
+    expect.assertions(4);
 
     // arrange
-    const statusCode = 200;
+    const successCode = 200;
+    const failureCode = 400;
 
     // act
-    const response = await request(app).get(`/user/${testUserInfo._id}`);
+    const responseSuccess = await request(app).get(`/user/${testUserInfo._id}`);
+    const responseFailure = await request(app).get(`/user/1337`);
 
     // assert
-    expect(response.statusCode).toBe(statusCode);
-    expect(response.body.data.email).toBe(testUserInfo.email);
-    expect(response.body.data.password).toBe(testUserInfo.password);
+    expect(responseSuccess.statusCode).toBe(successCode);
+    expect(responseSuccess.body.data.email).toBe(testUserInfo.email);
+    expect(responseSuccess.body.data.password).toBe(testUserInfo.password);
+    expect(responseFailure.statusCode).toBe(failureCode);
   })
 });
