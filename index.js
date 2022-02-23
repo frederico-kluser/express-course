@@ -5,16 +5,6 @@ const morgan = require('morgan');
 const errorhandler = require('errorhandler');
 const sessionMiddleware = require('./middlewares/sessionMiddleware');
 const bodyParser = require('body-parser');
-const mongoose = require("mongoose");
-
-const DB = process.env.DATABASE.replace("<PASSWORD>", process.env.DATABASE_PASSWORD);
-console.log(DB); // remove this in production
-mongoose.connect(DB, { 
-  useNewUrlParser: true,
-}).then(({ connections }) => {
-  console.log(connections);
-  console.log("Connected to MongoDB");
-});
 
 const app = express();
 const PORT = 8080;
@@ -38,6 +28,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(errorhandler()); // only for development
 }
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on: http://localhost:${PORT}`);
-});
+module.exports = {
+  app,
+  PORT,
+};
