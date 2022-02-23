@@ -14,6 +14,9 @@ app.use(morgan('dev'));
 app.use(bodyParser.json()); // app.use(express.json()); if dont wanna body-parser option
 app.use(sessionMiddleware);
 
+app.get('/test', (req, res) => {
+  res.status(200).send('Hello World');
+});
 app.use('/session', require('./routes/session'));
 app.use('/template', require('./routes/template'));
 app.use('/user', require('./routes/userRouter'));
