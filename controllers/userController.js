@@ -109,6 +109,20 @@ const deleteUser = (req, res, next) => {
   });
 };
 
+const deleteByBody = (req, res, next) => {
+  User.deleteMany(req.body).then((data) => {
+    res.status(200).json({
+      status: 'success',
+      data,
+    })
+  }).catch((err) => {
+    res.status(400).json({
+      status: 'error',
+      message: err,
+    })
+  });
+};
+
 const getByQuery = (req, res, next) => {  
   User.find(req.query).then((data) => {
     res.status(200).json({
@@ -129,5 +143,6 @@ module.exports = {
   updateUser,
   replaceUser,
   deleteUser,
+  deleteByBody,
   getByQuery,
 };
