@@ -1,6 +1,12 @@
 const User = require('../models/userModel');
+const { validationResult } = require('express-validator');
 
 const makeLogin = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const { email, password } = req.body;
 
   User.find({ email, password }).then((users) => {
