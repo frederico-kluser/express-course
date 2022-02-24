@@ -1,6 +1,85 @@
 const User = require("../models/userModel");
 const fs = require('fs');
 
+const deleteByBody = (req, res, next) => {
+  User.deleteMany(req.body).then((data) => {
+    res.status(200).json({
+      status: 'success',
+      data,
+    })
+  }).catch((err) => {
+    res.status(400).json({
+      status: 'error',
+      message: err,
+    })
+  });
+};
+
+const deleteUser = (req, res, next) => {
+  User.findByIdAndDelete(req.session.user.id).then((data) => {
+    res.status(204).json({
+      status: 'success',
+      data: null,
+    })
+  }).catch((err) => {
+    res.status(400).json({
+      status: 'error',
+      message: err,
+    })
+  });
+};
+
+const getAllUsers = (req, res, next) => {
+  User.find({}).then((users) => {
+    res.status(200).json({
+      status: "success",
+      data: users,
+    });
+  }).catch((err) => {
+    res.status(400).json({ status: "error", message: err });
+  });
+};
+
+const getAllUsersEmail = (req, res, next) => {
+  User.find(
+    {},
+    { 
+      email: 1,
+    }
+  ).then((users) => {
+    res.status(200).json({
+      status: "success",
+      data: users,
+    });
+  }).catch((err) => {
+    res.status(400).json({ status: "error", message: err });
+  });
+};
+
+const getByQuery = (req, res, next) => {  
+  User.find(req.query).then((data) => {
+    res.status(200).json({
+      status: 'success',
+      data,
+    })
+  }).catch((err) => {
+    res.status(400).json({ status: 'error', message: err });
+  });
+};
+
+const getUserById = (req, res, next) => {
+  const { id } = req.params;
+
+  User.findById(id).then((user) => {
+    res.status(200).json({
+      status: "success",
+      data: user,
+    });
+  }).catch((err) => {
+    res.status(400).json({ status: "error", message: err });
+  });
+};
+
 const insertBackup = (req, res, next) => {
   const { users } = JSON.parse(fs.readFileSync(`${__dirname}/../backup.json`));
 
@@ -36,43 +115,20 @@ const insertUser = (req, res, next) => {
   });
 };
 
-const getUserById = (req, res, next) => {
-  const { id } = req.params;
-
-  User.findById(id).then((user) => {
+const replaceUser = (req, res, next) => {  
+  User.replaceOne(
+  { _id: req.session.user.id},
+  req.body
+  ).then((data) => {
     res.status(200).json({
-      status: "success",
-      data: user,
-    });
+      status: 'success',
+      data,
+    })
   }).catch((err) => {
-    res.status(400).json({ status: "error", message: err });
-  });
-};
-
-const getAllUsers = (req, res, next) => {
-  User.find({}).then((users) => {
-    res.status(200).json({
-      status: "success",
-      data: users,
-    });
-  }).catch((err) => {
-    res.status(400).json({ status: "error", message: err });
-  });
-};
-
-const getAllUsersEmail = (req, res, next) => {
-  User.find(
-    {},
-    { 
-      email: 1,
-    }
-  ).then((users) => {
-    res.status(200).json({
-      status: "success",
-      data: users,
-    });
-  }).catch((err) => {
-    res.status(400).json({ status: "error", message: err });
+    res.status(400).json({
+      status: 'error',
+      message: err,
+    })
   });
 };
 
@@ -95,72 +151,16 @@ const updateUser = (req, res, next) => {
   });
 };
 
-const replaceUser = (req, res, next) => {  
-  User.replaceOne(
-  { _id: req.session.user.id},
-  req.body
-  ).then((data) => {
-    res.status(200).json({
-      status: 'success',
-      data,
-    })
-  }).catch((err) => {
-    res.status(400).json({
-      status: 'error',
-      message: err,
-    })
-  });
-};
-
-const deleteUser = (req, res, next) => {
-  User.findByIdAndDelete(req.session.user.id).then((data) => {
-    res.status(204).json({
-      status: 'success',
-      data: null,
-    })
-  }).catch((err) => {
-    res.status(400).json({
-      status: 'error',
-      message: err,
-    })
-  });
-};
-
-const deleteByBody = (req, res, next) => {
-  User.deleteMany(req.body).then((data) => {
-    res.status(200).json({
-      status: 'success',
-      data,
-    })
-  }).catch((err) => {
-    res.status(400).json({
-      status: 'error',
-      message: err,
-    })
-  });
-};
-
-const getByQuery = (req, res, next) => {  
-  User.find(req.query).then((data) => {
-    res.status(200).json({
-      status: 'success',
-      data,
-    })
-  }).catch((err) => {
-    res.status(400).json({ status: 'error', message: err });
-  });
-};
-
 
 module.exports = {
-  insertBackup,
-  insertUser,
+  deleteByBody,
+  deleteUser,
   getAllUsers,
   getAllUsersEmail,
-  getUserById,
-  updateUser,
-  replaceUser,
-  deleteUser,
-  deleteByBody,
   getByQuery,
+  getUserById,
+  insertBackup,
+  insertUser,
+  replaceUser,
+  updateUser,
 };
