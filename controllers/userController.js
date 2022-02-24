@@ -1,4 +1,21 @@
 const User = require("../models/userModel");
+const fs = require('fs');
+
+const insertBackup = (req, res, next) => {
+  const { users } = JSON.parse(fs.readFileSync(`${__dirname}/../backup.json`));
+
+  User.insertMany(users).then((data) => {
+    res.status(200).json({
+      status: 'success',
+      data,
+    })
+  }).catch((err) => {
+    res.status(400).json({
+      status: 'error',
+      message: err,
+    });
+  });
+};
 
 const insertUser = (req, res, next) => {
   const { name, email, password } = req.body;
@@ -136,6 +153,7 @@ const getByQuery = (req, res, next) => {
 
 
 module.exports = {
+  insertBackup,
   insertUser,
   getAllUsers,
   getAllUsersEmail,
